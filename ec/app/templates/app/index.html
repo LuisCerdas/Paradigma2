@@ -1,1 +1,229 @@
-<h1> Hello Django</h1>
+<!DOCTYPE html>
+{% load static %}
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TechHub - Tienda de Electrónica</title>
+    <link rel="stylesheet" href="{% static 'app/css/style.css' %}">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <!-- NAVBAR -->
+    <nav>
+        <div class="navbar">
+            <a href="#" class="logo">TechHub</a>
+            
+            <ul class="nav-links">
+                <li><a href="#productos">Productos</a></li>
+                <li><a href="#categorias">Categorías</a></li>
+                <li><a href="#contacto">Contacto</a></li>
+            </ul>
+
+            <div class="nav-right">
+               
+                <div style="position: relative; cursor: pointer;">
+                    <span class="cart-icon"><i class="fas fa-shopping-cart"></i></span>
+                    
+                </div>
+                <span class="user-icon"><i class="fas fa-user"></i></span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- HERO -->
+    <section class="hero">
+        <h1>Bienvenido a TechHub</h1>
+        <p>Descubre la tecnología más reciente y avanzada. Envíos rápidos y garantía en todos nuestros productos.</p>
+        <button class="hero-btn">Explorar Productos</button>
+    </section>
+
+    <!-- CONTENIDO PRINCIPAL -->
+    <div class="container">
+        <!-- FILTROS -->
+        <div id="categorias" class="filters">
+            <button class="filter-btn active">Todos</button>
+            <button class="filter-btn">Smartphones</button>
+            <button class="filter-btn">Laptops</button>
+            <button class="filter-btn">Auriculares</button>
+            <button class="filter-btn">Tablets</button>
+            <button class="filter-btn">Cámaras</button>
+        </div>
+
+        <!-- CATÁLOGO DE PRODUCTOS -->
+        <section id="productos" class="products">
+            <!-- Producto 1 -->
+            <div class="product-card">
+                <div class="product-image">
+                    <img src="https://www.losdistribuidores.com/wp-content/uploads/2023/10/iphone-15-pro-max-negro-titanio-vista-frontal-y-trasera.webp" 
+                         alt="iPhone 15 Pro Max" 
+                         class="product-img">
+                </div>
+                <div class="product-info">
+                    <div class="product-category">Smartphone</div>
+                    <div class="product-name">iPhone 15 Pro Max</div>
+                    <div class="product-description">Pantalla Super Retina XDR de 6.7" con tecnología A17 Pro</div>
+                    <div class="product-footer">
+                        <div class="product-price">₡150,299</div>
+                        <button class="add-to-cart-btn"><i class="fas fa-cart-plus"></i> Agregar</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Producto 2 -->
+            <div class="product-card">
+                <div class="product-image"><i class=""></i></div>
+                <div class="product-info">
+                    <div class="product-category">Laptop</div>
+                    <div class="product-name">MacBook Pro 16"</div>
+                    <div class="product-description">Procesador M3 Max, 36GB RAM, perfecto para creativos</div>
+                    <div class="product-footer">
+                        <div class="product-price">₡320,00</div>
+                        <button class="add-to-cart-btn"><i class="fas fa-cart-plus"></i> Agregar</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Producto 3 -->
+            <div class="product-card">
+                <div class="product-image"><i class=""></i></div>
+                <div class="product-info">
+                    <div class="product-category">Auriculares</div>
+                    <div class="product-name">Sony WH-1000XM5</div>
+                    <div class="product-description">Cancelación de ruido líder, batería 30 horas</div>
+                    <div class="product-footer">
+                        <div class="product-price">₡390,00</div>
+                        <button class="add-to-cart-btn"><i class="fas fa-cart-plus"></i> Agregar</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Producto 4 -->
+            <div class="product-card">
+                <div class="product-image"><i class=""></i></div>
+                <div class="product-info">
+                    <div class="product-category">Smartwatch</div>
+                    <div class="product-name">Apple Watch Series 9</div>
+                    <div class="product-description">Pantalla LTPO siempre activa, GPS integrado</div>
+                    <div class="product-footer">
+                        <div class="product-price">₡399.00</div>
+                        <button class="add-to-cart-btn"><i class="fas fa-cart-plus"></i> Agregar</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Producto 5 -->
+            <div class="product-card">
+                <div class="product-image"><i class=""></i></div>
+                <div class="product-info">
+                    <div class="product-category">Cámara</div>
+                    <div class="product-name">Canon R5 Mark II</div>
+                    <div class="product-description">Sensor full-frame 45MP, grabación 8K 120fps</div>
+                    <div class="product-footer">
+                        <div class="product-price">₡500,000</div>
+                        <button class="add-to-cart-btn"><i class="fas fa-cart-plus"></i> Agregar</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Producto 6 -->
+            <div class="product-card">
+                <div class="product-image"><i class=""></i></div>
+                <div class="product-info">
+                    <div class="product-category">Consola</div>
+                    <div class="product-name">PlayStation 5</div>
+                    <div class="product-description">4K 120fps, SSD ultra rápido, 1TB almacenamiento</div>
+                    <div class="product-footer">
+                        <div class="product-price">₡249,900</div>
+                        <button class="add-to-cart-btn"><i class="fas fa-cart-plus"></i> Agregar</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Producto 7 -->
+            <div class="product-card">
+                <div class="product-image"><i class=""></i></div>
+                <div class="product-info">
+                    <div class="product-category">Monitor</div>
+                    <div class="product-name">LG UltraWide 49"</div>
+                    <div class="product-description">240Hz, 0.1ms response time, perfecto para gaming</div>
+                    <div class="product-footer">
+                        <div class="product-price">₡110,000</div>
+                        <button class="add-to-cart-btn"><i class="fas fa-cart-plus"></i> Agregar</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Producto 8 -->
+            <div class="product-card">
+                <div class="product-image"><i class=""></i></div>
+                <div class="product-info">
+                    <div class="product-category">Accesorios</div>
+                    <div class="product-name">Cargador Rápido 140W</div>
+                    <div class="product-description">USB-C, compatible con múltiples dispositivos</div>
+                    <div class="product-footer">
+                        <div class="product-price">₡25,000</div>
+                        <button class="add-to-cart-btn"><i class="fas fa-cart-plus"></i> Agregar</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- FOOTER -->
+    <footer id="contacto">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>Sobre Nosotros</h3>
+                <ul>
+                    <li><a href="#"><i class="fas fa-info-circle"></i> Acerca de TechHub</a></li>
+                    <li><a href="#"><i class="fas fa-users"></i> Nuestro Equipo</a></li>
+                    <li><a href="#"><i class="fas fa-blog"></i> Blog</a></li>
+                </ul>
+            </div>
+           
+            <div class="footer-section">
+                <h3>Legal</h3>
+                <ul>
+                    <li><a href="#"><i class="fas fa-file-contract"></i> Términos y Condiciones</a></li>
+                    <li><a href="#"><i class="fas fa-shield-alt"></i> Política de Privacidad</a></li>
+
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3>Síguenos</h3>
+                <ul>
+                    <li><a href="#"><i class="fab fa-facebook"></i> Facebook</a></li>
+                    <li><a href="#"><i class="fab fa-instagram"></i> Instagram</a></li>
+                    <li><a href="#"><i class="fab fa-twitter"></i> Twitter</a></li>
+                    <li><a href="#"><i class="fab fa-linkedin"></i> LinkedIn</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2025 TechHub. Todos los derechos reservados. | Tienda de Electrónica Online</p>
+        </div>
+    </footer>
+
+    <script>
+        // Filtros interactivos
+        const filterBtns = document.querySelectorAll('.filter-btn');
+        filterBtns.forEach(btn => {
+            btn.addEventListener('click', function() {
+                filterBtns.forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
+            });
+        });
+
+        // Agregar al carrito
+        const addToCartBtns = document.querySelectorAll('.add-to-cart-btn');
+        addToCartBtns.forEach(btn => {
+            btn.addEventListener('click', function(e) {
+                e.stopPropagation();
+                alert('Producto agregado al carrito');
+            });
+        });
+    </script>
+</body>
+</html>
