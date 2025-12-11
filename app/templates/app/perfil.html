@@ -1,0 +1,94 @@
+{% extends 'app/base.html' %}
+{% load static %}
+
+{% block title %}Mi Perfil - TechHub{% endblock %}
+
+{% block content %}
+<div class="container" style="max-width: 1200px; margin: 2rem auto; padding: 2rem;">
+    <h2 style="margin-bottom: 2rem;">
+        <i class="fas fa-user"></i> Mi Perfil
+    </h2>
+    
+    <div style="display: grid; grid-template-columns: 1fr 2fr; gap: 2rem;">
+        <!-- Información del Usuario -->
+        <div style="background: var(--secondary); padding: 2rem; border-radius: 12px; border: 1px solid var(--border);">
+            <h3 style="margin-bottom: 1.5rem;">
+                <i class="fas fa-user-circle"></i> Información Personal
+            </h3>
+            
+            <div style="margin-bottom: 1rem;">
+                <p style="color: var(--text-muted); margin-bottom: 0.25rem;">Nombre</p>
+                <p style="font-weight: bold;">{{ usuario.nombre_usuario }} {{ usuario.apellido_usuario }}</p>
+            </div>
+            
+            <div style="margin-bottom: 1rem;">
+                <p style="color: var(--text-muted); margin-bottom: 0.25rem;">Email</p>
+                <p>{{ usuario.email_usuario }}</p>
+            </div>
+            
+            {% if usuario.telefono_usuario %}
+                <div style="margin-bottom: 1rem;">
+                    <p style="color: var(--text-muted); margin-bottom: 0.25rem;">Teléfono</p>
+                    <p>{{ usuario.telefono_usuario }}</p>
+                </div>
+            {% endif %}
+            
+            <div style="margin-bottom: 1rem;">
+                <p style="color: var(--text-muted); margin-bottom: 0.25rem;">Miembro desde</p>
+                <p>{{ usuario.fecha_registro_usuario|date:"d/m/Y" }}</p>
+            </div>
+            
+            <div style="margin-top: 2rem; padding-top: 2rem; border-top: 1px solid var(--border);">
+                <a href="{% url 'mis_pedidos' %}" style="display: block; padding: 0.75rem; background: var(--accent); color: white; border-radius: 8px; text-decoration: none; text-align: center; margin-bottom: 0.5rem;">
+                    <i class="fas fa-box"></i> Ver Mis Pedidos
+                </a>
+                <a href="{% url 'ver_carrito' %}" style="display: block; padding: 0.75rem; background: var(--primary); color: var(--text); border: 1px solid var(--border); border-radius: 8px; text-decoration: none; text-align: center;">
+                    <i class="fas fa-shopping-cart"></i> Ver Carrito
+                </a>
+            </div>
+        </div>
+        
+        <!-- Direcciones -->
+        <div style="background: var(--secondary); padding: 2rem; border-radius: 12px; border: 1px solid var(--border);">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+                <h3>
+                    <i class="fas fa-map-marker-alt"></i> Mis Direcciones
+                </h3>
+                <a href="{% url 'agregar_direccion' %}" style="padding: 0.5rem 1rem; background: var(--accent); color: white; border-radius: 8px; text-decoration: none;">
+                    <i class="fas fa-plus"></i> Agregar Dirección
+                </a>
+            </div>
+            
+            {% if direcciones %}
+                <div style="display: grid; gap: 1rem;">
+                    {% for direccion in direcciones %}
+                        <div style="padding: 1.5rem; background: var(--primary); border-radius: 8px; border: 1px solid var(--border);">
+                            {% if direccion.predeterminada_direccion %}
+                                <span style="display: inline-block; padding: 0.25rem 0.75rem; background: var(--accent); color: white; border-radius: 4px; font-size: 0.8rem; margin-bottom: 0.5rem;">
+                                    Predeterminada
+                                </span>
+                            {% endif %}
+                            <p style="font-weight: bold; margin-bottom: 0.5rem;">
+                                {{ direccion.direccion_detallada_direccion }}
+                            </p>
+                            <p style="color: var(--text-muted); font-size: 0.9rem;">
+                                {{ direccion.distrito_direccion }}, {{ direccion.canton_direccion }}, {{ direccion.provincia_direccion }}
+                            </p>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <div style="text-align: center; padding: 3rem 2rem;">
+                    <i class="fas fa-map-marker-alt" style="font-size: 3rem; color: var(--text-muted); margin-bottom: 1rem;"></i>
+                    <p style="color: var(--text-muted); margin-bottom: 1.5rem;">No tienes direcciones registradas</p>
+                    <a href="{% url 'agregar_direccion' %}" style="padding: 0.75rem 1.5rem; background: var(--accent); color: white; border-radius: 8px; text-decoration: none;">
+                        <i class="fas fa-plus"></i> Agregar Primera Dirección
+                    </a>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+

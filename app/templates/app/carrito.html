@@ -1,0 +1,86 @@
+{% extends 'app/base.html' %}
+{% load static %}
+
+{% block title %}Carrito de Compras - TechHub{% endblock %}
+
+{% block content %}
+<div class="container" style="max-width: 1200px; margin: 2rem auto; padding: 2rem;">
+    <h2 style="margin-bottom: 2rem;">
+        <i class="fas fa-shopping-cart"></i> Carrito de Compras
+    </h2>
+    
+    {% if carritos %}
+        <div style="display: grid; gap: 1.5rem;">
+            {% for carrito in carritos %}
+                <div style="background: var(--secondary); padding: 1.5rem; border-radius: 12px; border: 1px solid var(--border); display: flex; gap: 1.5rem; align-items: center;">
+                    <div style="flex: 0 0 150px;">
+                        <img src="{{ carrito.id_producto.imagen_producto|default:'https://via.placeholder.com/150x150?text=Sin+Imagen' }}" 
+                             alt="{{ carrito.id_producto.nombre_producto }}"
+                             style="width: 100%; border-radius: 8px;">
+                    </div>
+                    
+                    <div style="flex: 1;">
+                        <h3 style="margin-bottom: 0.5rem;">{{ carrito.id_producto.nombre_producto }}</h3>
+                        <p style="color: var(--text-muted); margin-bottom: 0.5rem;">
+                            {{ carrito.id_producto.categoria_producto|default:"General" }}
+                        </p>
+                        <p style="color: var(--accent); font-size: 1.2rem; font-weight: bold;">
+                            ₡{{ carrito.precio_unitario_carrito }} c/u
+                        </p>
+                    </div>
+                    
+                    <div style="flex: 0 0 200px;">
+                        <form method="POST" action="{% url 'actualizar_carrito' carrito.id_carrito %}" style="display: flex; gap: 0.5rem; align-items: center;">
+                            {% csrf_token %}
+                            <input type="number" name="cantidad" value="{{ carrito.cantidad_carrito }}" min="1" max="{{ carrito.id_producto.stock_producto }}"
+                                   style="width: 80px; padding: 0.5rem; border-radius: 8px; border: 1px solid var(--border); background: var(--primary); color: var(--text);">
+                            <button type="submit" style="padding: 0.5rem 1rem; background: var(--accent); color: white; border: none; border-radius: 8px; cursor: pointer;">
+                                <i class="fas fa-sync"></i>
+                            </button>
+                        </form>
+                        <p style="margin-top: 0.5rem; color: var(--text-muted); font-size: 0.9rem;">
+                            Stock: {{ carrito.id_producto.stock_producto }}
+                        </p>
+                    </div>
+                    
+                    <div style="flex: 0 0 150px; text-align: right;">
+                        <p style="font-size: 1.3rem; font-weight: bold; color: var(--accent); margin-bottom: 0.5rem;">
+                            ₡{{ carrito.subtotal_carrito }}
+                        </p>
+                        <a href="{% url 'eliminar_del_carrito' carrito.id_carrito %}" 
+                           onclick="return confirm('¿Eliminar este producto del carrito?')"
+                           style="color: #dc2626; text-decoration: none; font-size: 0.9rem;">
+                            <i class="fas fa-trash"></i> Eliminar
+                        </a>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+        
+        <div style="background: var(--secondary); padding: 2rem; border-radius: 12px; border: 1px solid var(--border); margin-top: 2rem; display: flex; justify-content: space-between; align-items: center;">
+            <div>
+                <h3 style="font-size: 1.5rem;">Total: <span style="color: var(--accent);">₡{{ total }}</span></h3>
+            </div>
+            <div style="display: flex; gap: 1rem;">
+                <a href="{% url 'home' %}" style="padding: 0.75rem 1.5rem; background: var(--primary); color: var(--text); border: 1px solid var(--border); border-radius: 8px; text-decoration: none;">
+                    <i class="fas fa-arrow-left"></i> Seguir Comprando
+                </a>
+                <a href="{% url 'checkout' %}" style="padding: 0.75rem 2rem; background: var(--accent); color: white; border: none; border-radius: 8px; text-decoration: none; font-weight: bold;">
+                    <i class="fas fa-credit-card"></i> Proceder al Pago
+                </a>
+            </div>
+        </div>
+    {% else %}
+        <div style="text-align: center; padding: 4rem 2rem; background: var(--secondary); border-radius: 12px; border: 1px solid var(--border);">
+            <i class="fas fa-shopping-cart" style="font-size: 4rem; color: var(--text-muted); margin-bottom: 1rem;"></i>
+            <h3 style="margin-bottom: 1rem;">Tu carrito está vacío</h3>
+            <p style="color: var(--text-muted); margin-bottom: 2rem;">Agrega productos al carrito para continuar</p>
+            <a href="{% url 'home' %}" style="padding: 0.75rem 2rem; background: var(--accent); color: white; border-radius: 8px; text-decoration: none;">
+                <i class="fas fa-arrow-left"></i> Ir a Productos
+            </a>
+        </div>
+    {% endif %}
+</div>
+{% endblock %}
+
+

@@ -1,0 +1,73 @@
+{% extends 'app/base.html' %}
+{% load static %}
+
+{% block title %}Registro - TechHub{% endblock %}
+
+{% block content %}
+<div class="container" style="max-width: 500px; margin: 4rem auto; padding: 2rem;">
+    <div style="background: var(--secondary); padding: 2rem; border-radius: 12px; border: 1px solid var(--border);">
+        <h2 style="margin-bottom: 1.5rem; text-align: center;">
+            <i class="fas fa-user-plus"></i> Crear Cuenta
+        </h2>
+        
+        <form method="POST" action="{% url 'registro' %}">
+            {% csrf_token %}
+            
+            <div style="margin-bottom: 1rem;">
+                <label for="nombre_usuario" style="display: block; margin-bottom: 0.5rem;">
+                    <i class="fas fa-user"></i> Nombre
+                </label>
+                <input type="text" id="nombre_usuario" name="nombre_usuario" required
+                       style="width: 100%; padding: 0.75rem; border-radius: 8px; border: 1px solid var(--border); background: var(--primary); color: var(--text);">
+            </div>
+            
+            <div style="margin-bottom: 1rem;">
+                <label for="apellido_usuario" style="display: block; margin-bottom: 0.5rem;">
+                    <i class="fas fa-user"></i> Apellido
+                </label>
+                <input type="text" id="apellido_usuario" name="apellido_usuario" required
+                       style="width: 100%; padding: 0.75rem; border-radius: 8px; border: 1px solid var(--border); background: var(--primary); color: var(--text);">
+            </div>
+            
+            <div style="margin-bottom: 1rem;">
+                <label for="email_usuario" style="display: block; margin-bottom: 0.5rem;">
+                    <i class="fas fa-envelope"></i> Email
+                </label>
+                <input type="email" id="email_usuario" name="email_usuario" required
+                       style="width: 100%; padding: 0.75rem; border-radius: 8px; border: 1px solid var(--border); background: var(--primary); color: var(--text);">
+            </div>
+            
+            <div style="margin-bottom: 1rem;">
+                <label for="telefono_usuario" style="display: block; margin-bottom: 0.5rem;">
+                    <i class="fas fa-phone"></i> Teléfono (Opcional)
+                </label>
+                <input type="tel" id="telefono_usuario" name="telefono_usuario"
+                       style="width: 100%; padding: 0.75rem; border-radius: 8px; border: 1px solid var(--border); background: var(--primary); color: var(--text);">
+            </div>
+            
+            <div style="margin-bottom: 1.5rem;">
+                <label for="contraseña_usuario" style="display: block; margin-bottom: 0.5rem;">
+                    <i class="fas fa-lock"></i> Contraseña
+                </label>
+                <input type="password" id="contraseña_usuario" name="contraseña_usuario" required
+                       style="width: 100%; padding: 0.75rem; border-radius: 8px; border: 1px solid var(--border); background: var(--primary); color: var(--text);">
+            </div>
+            
+            <button type="submit" style="width: 100%; padding: 0.75rem; background: var(--accent); color: white; border: none; border-radius: 8px; font-size: 1rem; cursor: pointer; margin-bottom: 1rem;">
+                <i class="fas fa-user-plus"></i> Registrarse
+            </button>
+        </form>
+        
+        <div style="text-align: center; margin-top: 1.5rem; padding-top: 1.5rem; border-top: 1px solid var(--border);">
+            <p style="color: var(--text-muted);">
+                ¿Ya tienes una cuenta? 
+                <a href="{% url 'login' %}" style="color: var(--accent); text-decoration: none;">
+                    Inicia sesión aquí
+                </a>
+            </p>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+

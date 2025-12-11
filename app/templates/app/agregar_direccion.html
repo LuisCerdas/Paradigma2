@@ -1,0 +1,73 @@
+{% extends 'app/base.html' %}
+{% load static %}
+
+{% block title %}Agregar Dirección - TechHub{% endblock %}
+
+{% block content %}
+<div class="container" style="max-width: 600px; margin: 2rem auto; padding: 2rem;">
+    <div style="background: var(--secondary); padding: 2rem; border-radius: 12px; border: 1px solid var(--border);">
+        <h2 style="margin-bottom: 1.5rem;">
+            <i class="fas fa-map-marker-alt"></i> Agregar Nueva Dirección
+        </h2>
+        
+        <form method="POST" action="{% url 'agregar_direccion' %}">
+            {% csrf_token %}
+            
+            <div style="margin-bottom: 1rem;">
+                <label for="provincia_direccion" style="display: block; margin-bottom: 0.5rem;">
+                    Provincia
+                </label>
+                <input type="text" id="provincia_direccion" name="provincia_direccion" required
+                       placeholder="Ej: San José"
+                       style="width: 100%; padding: 0.75rem; border-radius: 8px; border: 1px solid var(--border); background: var(--primary); color: var(--text);">
+            </div>
+            
+            <div style="margin-bottom: 1rem;">
+                <label for="canton_direccion" style="display: block; margin-bottom: 0.5rem;">
+                    Cantón
+                </label>
+                <input type="text" id="canton_direccion" name="canton_direccion" required
+                       placeholder="Ej: San José"
+                       style="width: 100%; padding: 0.75rem; border-radius: 8px; border: 1px solid var(--border); background: var(--primary); color: var(--text);">
+            </div>
+            
+            <div style="margin-bottom: 1rem;">
+                <label for="distrito_direccion" style="display: block; margin-bottom: 0.5rem;">
+                    Distrito
+                </label>
+                <input type="text" id="distrito_direccion" name="distrito_direccion" required
+                       placeholder="Ej: Carmen"
+                       style="width: 100%; padding: 0.75rem; border-radius: 8px; border: 1px solid var(--border); background: var(--primary); color: var(--text);">
+            </div>
+            
+            <div style="margin-bottom: 1rem;">
+                <label for="direccion_detallada_direccion" style="display: block; margin-bottom: 0.5rem;">
+                    Dirección Detallada
+                </label>
+                <textarea id="direccion_detallada_direccion" name="direccion_detallada_direccion" required
+                          placeholder="Ej: 200 metros norte del Banco Nacional"
+                          rows="3"
+                          style="width: 100%; padding: 0.75rem; border-radius: 8px; border: 1px solid var(--border); background: var(--primary); color: var(--text); resize: vertical;"></textarea>
+            </div>
+            
+            <div style="margin-bottom: 1.5rem;">
+                <label style="display: flex; align-items: center; cursor: pointer;">
+                    <input type="checkbox" name="predeterminada_direccion" style="margin-right: 0.5rem;">
+                    <span>Marcar como dirección predeterminada</span>
+                </label>
+            </div>
+            
+            <div style="display: flex; gap: 1rem;">
+                <button type="submit" style="flex: 1; padding: 0.75rem; background: var(--accent); color: white; border: none; border-radius: 8px; font-size: 1rem; cursor: pointer;">
+                    <i class="fas fa-save"></i> Guardar Dirección
+                </button>
+                <a href="{% url 'perfil' %}" style="flex: 1; padding: 0.75rem; background: var(--primary); color: var(--text); border: 1px solid var(--border); border-radius: 8px; text-decoration: none; text-align: center;">
+                    <i class="fas fa-times"></i> Cancelar
+                </a>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}
+
+

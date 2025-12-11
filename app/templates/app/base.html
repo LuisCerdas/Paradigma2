@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}TechHub - Tienda de Electrónica{% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'app/css/style.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    {% block extra_css %}{% endblock %}
+</head>
+<body>
+    <!-- NAVBAR -->
+    <nav>
+        <div class="navbar">
+            <a href="{% url 'home' %}" class="logo">TechHub</a>
+            
+            <ul class="nav-links">
+                <li><a href="{% url 'home' %}">Inicio</a></li>
+                <li><a href="{% url 'home' %}#productos">Productos</a></li>
+                {% if request.session.usuario_id %}
+                    <li><a href="{% url 'mis_pedidos' %}">Mis Pedidos</a></li>
+                    {% if request.session.usuario_rol == 'admin' %}
+                        <li><a href="{% url 'listar_productos' %}">Admin</a></li>
+                    {% endif %}
+                {% endif %}
+            </ul>
+
+            <div class="nav-right">
+                {% if request.session.usuario_id %}
+                    <a href="{% url 'ver_carrito' %}" style="position: relative; cursor: pointer; text-decoration: none; color: var(--text); margin-right: 1rem;">
+                        <i class="fas fa-shopping-cart"></i>
+                        {% if cart_count > 0 %}
+                            <span style="position: absolute; top: -8px; right: -8px; background: var(--accent); color: white; border-radius: 50%; width: 20px; height: 20px; display: flex; align-items: center; justify-content: center; font-size: 0.7rem;">{{ cart_count }}</span>
+                        {% endif %}
+                    </a>
+                    <div class="user-menu" style="position: relative;">
+                        <a href="{% url 'perfil' %}" style="text-decoration: none; color: var(--text); margin-right: 1rem;">
+                            <i class="fas fa-user"></i> {{ request.session.usuario_nombre|truncatewords:1 }}
+                        </a>
+                        <a href="{% url 'logout' %}" style="text-decoration: none; color: var(--text); background: var(--accent); padding: 0.5rem 1rem; border-radius: 5px; transition: background 0.3s;" onmouseover="this.style.background='#2563eb'" onmouseout="this.style.background='var(--accent)'">
+                            <i class="fas fa-sign-out-alt"></i> Cerrar Sesión
+                        </a>
+                    </div>
+                {% else %}
+                    <a href="{% url 'login' %}" style="text-decoration: none; color: var(--text); margin-right: 1rem;">
+                        <i class="fas fa-sign-in-alt"></i> Iniciar Sesión
+                    </a>
+                    <a href="{% url 'registro' %}" style="text-decoration: none; color: var(--text);">
+                        <i class="fas fa-user-plus"></i> Registrarse
+                    </a>
+                {% endif %}
+            </div>
+        </div>
+    </nav>
+
+    <!-- Mensajes -->
+    {% if messages %}
+        <div style="max-width: 1400px; margin: 1rem auto; padding: 0 2rem;">
+            {% for message in messages %}
+                <div class="alert alert-{{ message.tags }}" style="padding: 1rem; margin-bottom: 0.5rem; border-radius: 8px; background: {% if message.tags == 'error' %}#dc2626{% elif message.tags == 'success' %}#16a34a{% else %}#3b82f6{% endif %}; color: white;">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
+
+    <!-- Contenido -->
+    {% block content %}{% endblock %}
+
+    <!-- FOOTER -->
+    <footer id="contacto">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>Sobre Nosotros</h3>
+                <ul>
+                    <li><a href="#"><i class="fas fa-info-circle"></i> Acerca de TechHub</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3>Legal</h3>
+                <ul>
+                    <li><a href="#"><i class="fas fa-file-contract"></i> Términos y Condiciones</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3>Síguenos</h3>
+                <ul>
+                    <li><a href="#"><i class="fab fa-facebook"></i> Facebook</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2025 TechHub. Todos los derechos reservados.</p>
+        </div>
+    </footer>
+
+    {% block extra_js %}{% endblock %}
+</body>
+</html>
+
+

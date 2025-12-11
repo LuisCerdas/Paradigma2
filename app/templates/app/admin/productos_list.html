@@ -1,0 +1,85 @@
+{% extends 'app/base.html' %}
+{% load static %}
+
+{% block title %}Administrar Productos - TechHub{% endblock %}
+
+{% block content %}
+<div class="container" style="max-width: 1400px; margin: 2rem auto; padding: 2rem;">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
+        <h2>
+            <i class="fas fa-box"></i> Administrar Productos
+        </h2>
+        <a href="{% url 'crear_producto' %}" style="padding: 0.75rem 1.5rem; background: var(--accent); color: white; border-radius: 8px; text-decoration: none;">
+            <i class="fas fa-plus"></i> Nuevo Producto
+        </a>
+    </div>
+    
+    {% if productos %}
+        <div style="overflow-x: auto;">
+            <table style="width: 100%; background: var(--secondary); border-radius: 12px; border: 1px solid var(--border); border-collapse: collapse;">
+                <thead>
+                    <tr style="border-bottom: 2px solid var(--border);">
+                        <th style="padding: 1rem; text-align: left;">Imagen</th>
+                        <th style="padding: 1rem; text-align: left;">Nombre</th>
+                        <th style="padding: 1rem; text-align: left;">Categoría</th>
+                        <th style="padding: 1rem; text-align: left;">Precio</th>
+                        <th style="padding: 1rem; text-align: left;">Stock</th>
+                        <th style="padding: 1rem; text-align: left;">Estado</th>
+                        <th style="padding: 1rem; text-align: center;">Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for producto in productos %}
+                        <tr style="border-bottom: 1px solid var(--border);">
+                            <td style="padding: 1rem;">
+                                <img src="{{ producto.imagen_producto|default:'https://via.placeholder.com/60x60?text=Sin+Imagen' }}" 
+                                     alt="{{ producto.nombre_producto }}"
+                                     style="width: 60px; height: 60px; border-radius: 8px; object-fit: cover;">
+                            </td>
+                            <td style="padding: 1rem;">
+                                <strong>{{ producto.nombre_producto }}</strong>
+                                {% if producto.codigo_producto %}
+                                    <br><small style="color: var(--text-muted);">{{ producto.codigo_producto }}</small>
+                                {% endif %}
+                            </td>
+                            <td style="padding: 1rem;">{{ producto.categoria_producto|default:"-" }}</td>
+                            <td style="padding: 1rem;">₡{{ producto.precio_producto }}</td>
+                            <td style="padding: 1rem;">{{ producto.stock_producto }}</td>
+                            <td style="padding: 1rem;">
+                                {% if producto.activo_producto %}
+                                    <span style="padding: 0.25rem 0.75rem; background: #16a34a; color: white; border-radius: 4px; font-size: 0.8rem;">Activo</span>
+                                {% else %}
+                                    <span style="padding: 0.25rem 0.75rem; background: #dc2626; color: white; border-radius: 4px; font-size: 0.8rem;">Inactivo</span>
+                                {% endif %}
+                            </td>
+                            <td style="padding: 1rem; text-align: center;">
+                                <div style="display: flex; gap: 0.5rem; justify-content: center;">
+                                    <a href="{% url 'editar_producto' producto.id_producto %}" 
+                                       style="padding: 0.5rem 1rem; background: var(--accent); color: white; border-radius: 6px; text-decoration: none; font-size: 0.9rem;">
+                                        <i class="fas fa-edit"></i> Editar
+                                    </a>
+                                    <a href="{% url 'eliminar_producto' producto.id_producto %}" 
+                                       onclick="return confirm('¿Estás seguro de eliminar este producto?')"
+                                       style="padding: 0.5rem 1rem; background: #dc2626; color: white; border-radius: 6px; text-decoration: none; font-size: 0.9rem;">
+                                        <i class="fas fa-trash"></i> Eliminar
+                                    </a>
+                                </div>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% else %}
+        <div style="text-align: center; padding: 4rem 2rem; background: var(--secondary); border-radius: 12px; border: 1px solid var(--border);">
+            <i class="fas fa-box-open" style="font-size: 4rem; color: var(--text-muted); margin-bottom: 1rem;"></i>
+            <h3 style="margin-bottom: 1rem;">No hay productos registrados</h3>
+            <a href="{% url 'crear_producto' %}" style="padding: 0.75rem 2rem; background: var(--accent); color: white; border-radius: 8px; text-decoration: none;">
+                <i class="fas fa-plus"></i> Crear Primer Producto
+            </a>
+        </div>
+    {% endif %}
+</div>
+{% endblock %}
+
+

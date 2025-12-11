@@ -1,40 +1,13 @@
-<!DOCTYPE html>
+{% extends 'app/base.html' %}
 {% load static %}
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TechHub - Tienda de Electrónica</title>
-    <link rel="stylesheet" href="{% static 'app/css/style.css' %}">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-</head>
-<body>
 
-    <!-- NAVBAR -->
-    <nav>
-        <div class="navbar">
-            <a href="#" class="logo">TechHub</a>
-            
-            <ul class="nav-links">
-                <li><a href="#productos">Productos</a></li>
-                <li><a href="#categorias">Categorías</a></li>
-                <li><a href="#contacto">Contacto</a></li>
-            </ul>
-
-            <div class="nav-right">
-                <div style="position: relative; cursor: pointer;">
-                    <span class="cart-icon"><i class="fas fa-shopping-cart"></i></span>
-                </div>
-                <span class="user-icon"><i class="fas fa-user"></i></span>
-            </div>
-        </div>
-    </nav>
+{% block content %}
 
     <!-- HERO -->
     <section class="hero">
         <h1>Bienvenido a TechHub</h1>
         <p>Descubre la tecnología más reciente y avanzada.</p>
-        <button class="hero-btn">Explorar Productos</button>
+        <a href="#productos" class="hero-btn">Explorar Productos</a>
     </section>
 
     <!-- CONTENIDO PRINCIPAL -->
@@ -42,12 +15,20 @@
 
         <!-- FILTROS -->
         <div id="categorias" class="filters">
-            <button class="filter-btn active">Todos</button>
-            <button class="filter-btn">Smartphones</button>
-            <button class="filter-btn">Laptops</button>
-            <button class="filter-btn">Auriculares</button>
-            <button class="filter-btn">Tablets</button>
-            <button class="filter-btn">Cámaras</button>
+            <a href="{% url 'home' %}" class="filter-btn {% if not request.GET.categoria %}active{% endif %}">Todos</a>
+            {% for cat in categorias %}
+                <a href="?categoria={{ cat }}" class="filter-btn {% if request.GET.categoria == cat %}active{% endif %}">{{ cat }}</a>
+            {% endfor %}
+        </div>
+
+        <!-- Búsqueda -->
+        <div style="margin-bottom: 2rem; text-align: center;">
+            <form method="GET" action="{% url 'home' %}" style="display: inline-flex; gap: 0.5rem; max-width: 500px; width: 100%;">
+                <input type="text" name="busqueda" placeholder="Buscar productos..." value="{{ request.GET.busqueda }}" style="flex: 1; padding: 0.75rem; border-radius: 8px; border: 1px solid var(--border); background: var(--secondary); color: var(--text);">
+                <button type="submit" style="padding: 0.75rem 1.5rem; background: var(--accent); color: white; border: none; border-radius: 8px; cursor: pointer;">
+                    <i class="fas fa-search"></i>
+                </button>
+            </form>
         </div>
 
         <!-- CATÁLOGO DE PRODUCTOS DINÁMICO -->
@@ -79,9 +60,13 @@
                                 <div class="product-price">
                                     ₡{{ p.precio_producto }}
                                 </div>
-                                <button class="add-to-cart-btn">
-                                    <i class="fas fa-cart-plus"></i> Agregar
-                                </button>
+                                <form method="POST" action="{% url 'agregar_al_carrito' p.id_producto %}" style="display: inline;">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="cantidad" value="1">
+                                    <button type="submit" class="add-to-cart-btn">
+                                        <i class="fas fa-cart-plus"></i> Agregar
+                                    </button>
+                                </form>
                             </div>
                         </div>
                     </div>
@@ -94,58 +79,4 @@
 
         </section>
     </div>
-
-    <!-- FOOTER -->
-    <footer id="contacto">
-        <div class="footer-content">
-
-            <div class="footer-section">
-                <h3>Sobre Nosotros</h3>
-                <ul>
-                    <li><a href="#"><i class="fas fa-info-circle"></i> Acerca de TechHub</a></li>
-                </ul>
-            </div>
-
-            <div class="footer-section">
-                <h3>Legal</h3>
-                <ul>
-                    <li><a href="#"><i class="fas fa-file-contract"></i> Términos y Condiciones</a></li>
-                </ul>
-            </div>
-
-            <div class="footer-section">
-                <h3>Síguenos</h3>
-                <ul>
-                    <li><a href="#"><i class="fab fa-facebook"></i> Facebook</a></li>
-                </ul>
-            </div>
-
-        </div>
-
-        <div class="footer-bottom">
-            <p>&copy; 2025 TechHub. Todos los derechos reservados.</p>
-        </div>
-    </footer>
-
-    <script>
-        // Cambiar filtro activo
-        const filterBtns = document.querySelectorAll('.filter-btn');
-        filterBtns.forEach(btn => {
-            btn.addEventListener('click', function() {
-                filterBtns.forEach(b => b.classList.remove('active'));
-                this.classList.add('active');
-            });
-        });
-
-        // Agregar al carrito
-        const addToCartBtns = document.querySelectorAll('.add-to-cart-btn');
-        addToCartBtns.forEach(btn => {
-            btn.addEventListener('click', function(e) {
-                e.stopPropagation();
-                alert('Producto agregado al carrito');
-            });
-        });
-    </script>
-
-</body>
-</html>
+{% endblock %}

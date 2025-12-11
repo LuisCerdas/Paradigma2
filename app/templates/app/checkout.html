@@ -1,0 +1,139 @@
+{% extends 'app/base.html' %}
+{% load static %}
+
+{% block title %}Checkout - TechHub{% endblock %}
+
+{% block content %}
+<div class="container" style="max-width: 1200px; margin: 2rem auto; padding: 2rem;">
+    <h2 style="margin-bottom: 2rem;">
+        <i class="fas fa-credit-card"></i> Finalizar Compra
+    </h2>
+    
+    <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 2rem;">
+        <!-- Formulario de Checkout -->
+        <div>
+            <div style="background: var(--secondary); padding: 2rem; border-radius: 12px; border: 1px solid var(--border); margin-bottom: 2rem;">
+                <h3 style="margin-bottom: 1.5rem;">
+                    <i class="fas fa-map-marker-alt"></i> Dirección de Envío
+                </h3>
+                
+                {% if direcciones %}
+                    <form method="POST" action="{% url 'checkout' %}">
+                        {% csrf_token %}
+                        
+                        <div style="margin-bottom: 1.5rem;">
+                            <label style="display: block; margin-bottom: 0.5rem;">Selecciona una dirección:</label>
+                            {% for direccion in direcciones %}
+                                <div style="margin-bottom: 0.5rem;">
+                                    <input type="radio" name="direccion_id" value="{{ direccion.id_direccion }}" 
+                                           id="dir_{{ direccion.id_direccion }}" 
+                                           {% if direccion.predeterminada_direccion %}checked{% endif %}
+                                           required>
+                                    <label for="dir_{{ direccion.id_direccion }}" style="margin-left: 0.5rem;">
+                                        {{ direccion.direccion_detallada_direccion }}, 
+                                        {{ direccion.distrito_direccion }}, 
+                                        {{ direccion.canton_direccion }}, 
+                                        {{ direccion.provincia_direccion }}
+                                        {% if direccion.predeterminada_direccion %}
+                                            <span style="color: var(--accent);">(Predeterminada)</span>
+                                        {% endif %}
+                                    </label>
+                                </div>
+                            {% endfor %}
+                        </div>
+                        
+                        <a href="{% url 'agregar_direccion' %}" style="color: var(--accent); text-decoration: none;">
+                            <i class="fas fa-plus"></i> Agregar nueva dirección
+                        </a>
+                        
+                        <div style="margin-top: 2rem; padding-top: 2rem; border-top: 1px solid var(--border);">
+                            <h3 style="margin-bottom: 1rem;">
+                                <i class="fas fa-credit-card"></i> Método de Pago
+                            </h3>
+                            
+                            <div style="margin-bottom: 1rem;">
+                                <input type="radio" name="metodo_pago" value="tarjeta" id="pago_tarjeta" required>
+                                <label for="pago_tarjeta" style="margin-left: 0.5rem;">
+                                    <i class="fas fa-credit-card"></i> Tarjeta de Crédito/Débito
+                                </label>
+                            </div>
+                            
+                            <div style="margin-bottom: 1rem;">
+                                <input type="radio" name="metodo_pago" value="transferencia" id="pago_transferencia" required>
+                                <label for="pago_transferencia" style="margin-left: 0.5rem;">
+                                    <i class="fas fa-university"></i> Transferencia Bancaria
+                                </label>
+                            </div>
+                            
+                            <div style="margin-bottom: 1.5rem;">
+                                <input type="radio" name="metodo_pago" value="efectivo" id="pago_efectivo" required>
+                                <label for="pago_efectivo" style="margin-left: 0.5rem;">
+                                    <i class="fas fa-money-bill"></i> Efectivo
+                                </label>
+                            </div>
+                            
+                            <div style="margin-bottom: 1.5rem;">
+                                <label for="referencia_transaccion" style="display: block; margin-bottom: 0.5rem;">
+                                    Referencia de Transacción (Opcional)
+                                </label>
+                                <input type="text" id="referencia_transaccion" name="referencia_transaccion"
+                                       placeholder="Número de referencia o comprobante"
+                                       style="width: 100%; padding: 0.75rem; border-radius: 8px; border: 1px solid var(--border); background: var(--primary); color: var(--text);">
+                            </div>
+                            
+                            <button type="submit" style="width: 100%; padding: 1rem; background: var(--accent); color: white; border: none; border-radius: 8px; font-size: 1.1rem; cursor: pointer; font-weight: bold;">
+                                <i class="fas fa-check"></i> Confirmar Pedido
+                            </button>
+                        </div>
+                    </form>
+                {% else %}
+                    <p style="margin-bottom: 1rem; color: var(--text-muted);">
+                        No tienes direcciones registradas. Por favor agrega una dirección para continuar.
+                    </p>
+                    <a href="{% url 'agregar_direccion' %}" style="padding: 0.75rem 1.5rem; background: var(--accent); color: white; border-radius: 8px; text-decoration: none; display: inline-block;">
+                        <i class="fas fa-plus"></i> Agregar Dirección
+                    </a>
+                {% endif %}
+            </div>
+        </div>
+        
+        <!-- Resumen del Pedido -->
+        <div>
+            <div style="background: var(--secondary); padding: 2rem; border-radius: 12px; border: 1px solid var(--border); position: sticky; top: 100px;">
+                <h3 style="margin-bottom: 1.5rem;">Resumen del Pedido</h3>
+                
+                <div style="margin-bottom: 1.5rem;">
+                    {% for carrito in carritos %}
+                        <div style="display: flex; justify-content: space-between; margin-bottom: 0.75rem; padding-bottom: 0.75rem; border-bottom: 1px solid var(--border);">
+                            <div>
+                                <p style="font-weight: bold;">{{ carrito.id_producto.nombre_producto }}</p>
+                                <p style="color: var(--text-muted); font-size: 0.9rem;">
+                                    {{ carrito.cantidad_carrito }} x ₡{{ carrito.precio_unitario_carrito }}
+                                </p>
+                            </div>
+                            <p style="font-weight: bold;">₡{{ carrito.subtotal_carrito }}</p>
+                        </div>
+                    {% endfor %}
+                </div>
+                
+                <div style="padding-top: 1rem; border-top: 2px solid var(--border);">
+                    <div style="display: flex; justify-content: space-between; margin-bottom: 1rem;">
+                        <span>Subtotal:</span>
+                        <span>₡{{ total }}</span>
+                    </div>
+                    <div style="display: flex; justify-content: space-between; margin-bottom: 1rem;">
+                        <span>Envío:</span>
+                        <span>Gratis</span>
+                    </div>
+                    <div style="display: flex; justify-content: space-between; font-size: 1.3rem; font-weight: bold; color: var(--accent); padding-top: 1rem; border-top: 1px solid var(--border);">
+                        <span>Total:</span>
+                        <span>₡{{ total }}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+

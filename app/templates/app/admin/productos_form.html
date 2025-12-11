@@ -1,0 +1,92 @@
+{% extends 'app/base.html' %}
+{% load static %}
+
+{% block title %}{{ accion }} Producto - TechHub{% endblock %}
+
+{% block content %}
+<div class="container" style="max-width: 800px; margin: 2rem auto; padding: 2rem;">
+    <div style="background: var(--secondary); padding: 2rem; border-radius: 12px; border: 1px solid var(--border);">
+        <h2 style="margin-bottom: 1.5rem;">
+            <i class="fas fa-{% if accion == 'Crear' %}plus{% else %}edit{% endif %}"></i> {{ accion }} Producto
+        </h2>
+        
+        <form method="POST" action="{% if accion == 'Crear' %}{% url 'crear_producto' %}{% else %}{% url 'editar_producto' producto.id_producto %}{% endif %}">
+            {% csrf_token %}
+            
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem;">
+                <div>
+                    <label for="nombre_producto" style="display: block; margin-bottom: 0.5rem;">Nombre del Producto *</label>
+                    <input type="text" id="nombre_producto" name="nombre_producto" required
+                           value="{% if producto %}{{ producto.nombre_producto }}{% endif %}"
+                           style="width: 100%; padding: 0.75rem; border-radius: 8px; border: 1px solid var(--border); background: var(--primary); color: var(--text);">
+                </div>
+                
+                <div>
+                    <label for="codigo_producto" style="display: block; margin-bottom: 0.5rem;">Código del Producto</label>
+                    <input type="text" id="codigo_producto" name="codigo_producto"
+                           value="{% if producto %}{{ producto.codigo_producto }}{% endif %}"
+                           style="width: 100%; padding: 0.75rem; border-radius: 8px; border: 1px solid var(--border); background: var(--primary); color: var(--text);">
+                </div>
+            </div>
+            
+            <div style="margin-bottom: 1rem;">
+                <label for="descripcion_producto" style="display: block; margin-bottom: 0.5rem;">Descripción</label>
+                <textarea id="descripcion_producto" name="descripcion_producto" rows="4"
+                          style="width: 100%; padding: 0.75rem; border-radius: 8px; border: 1px solid var(--border); background: var(--primary); color: var(--text); resize: vertical;">{% if producto %}{{ producto.descripcion_producto }}{% endif %}</textarea>
+            </div>
+            
+            <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1rem; margin-bottom: 1rem;">
+                <div>
+                    <label for="categoria_producto" style="display: block; margin-bottom: 0.5rem;">Categoría</label>
+                    <input type="text" id="categoria_producto" name="categoria_producto"
+                           value="{% if producto %}{{ producto.categoria_producto }}{% endif %}"
+                           placeholder="Ej: Smartphones"
+                           style="width: 100%; padding: 0.75rem; border-radius: 8px; border: 1px solid var(--border); background: var(--primary); color: var(--text);">
+                </div>
+                
+                <div>
+                    <label for="precio_producto" style="display: block; margin-bottom: 0.5rem;">Precio *</label>
+                    <input type="number" id="precio_producto" name="precio_producto" required step="0.01" min="0"
+                           value="{% if producto %}{{ producto.precio_producto }}{% endif %}"
+                           style="width: 100%; padding: 0.75rem; border-radius: 8px; border: 1px solid var(--border); background: var(--primary); color: var(--text);">
+                </div>
+                
+                <div>
+                    <label for="stock_producto" style="display: block; margin-bottom: 0.5rem;">Stock *</label>
+                    <input type="number" id="stock_producto" name="stock_producto" required min="0"
+                           value="{% if producto %}{{ producto.stock_producto }}{% else %}0{% endif %}"
+                           style="width: 100%; padding: 0.75rem; border-radius: 8px; border: 1px solid var(--border); background: var(--primary); color: var(--text);">
+                </div>
+            </div>
+            
+            <div style="margin-bottom: 1rem;">
+                <label for="imagen_producto" style="display: block; margin-bottom: 0.5rem;">URL de la Imagen</label>
+                <input type="url" id="imagen_producto" name="imagen_producto"
+                       value="{% if producto %}{{ producto.imagen_producto }}{% endif %}"
+                       placeholder="https://ejemplo.com/imagen.jpg"
+                       style="width: 100%; padding: 0.75rem; border-radius: 8px; border: 1px solid var(--border); background: var(--primary); color: var(--text);">
+            </div>
+            
+            <div style="margin-bottom: 1.5rem;">
+                <label style="display: flex; align-items: center; cursor: pointer;">
+                    <input type="checkbox" name="activo_producto" 
+                           {% if not producto or producto.activo_producto %}checked{% endif %}
+                           style="margin-right: 0.5rem;">
+                    <span>Producto activo (visible en la tienda)</span>
+                </label>
+            </div>
+            
+            <div style="display: flex; gap: 1rem;">
+                <button type="submit" style="flex: 1; padding: 0.75rem; background: var(--accent); color: white; border: none; border-radius: 8px; font-size: 1rem; cursor: pointer;">
+                    <i class="fas fa-save"></i> Guardar
+                </button>
+                <a href="{% url 'listar_productos' %}" style="flex: 1; padding: 0.75rem; background: var(--primary); color: var(--text); border: 1px solid var(--border); border-radius: 8px; text-decoration: none; text-align: center;">
+                    <i class="fas fa-times"></i> Cancelar
+                </a>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}
+
+

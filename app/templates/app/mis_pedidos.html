@@ -1,0 +1,94 @@
+{% extends 'app/base.html' %}
+{% load static %}
+
+{% block title %}Mis Pedidos - TechHub{% endblock %}
+
+{% block content %}
+<div class="container" style="max-width: 1200px; margin: 2rem auto; padding: 2rem;">
+    <h2 style="margin-bottom: 2rem;">
+        <i class="fas fa-box"></i> Mis Pedidos
+    </h2>
+    
+    {% if pedidos %}
+        <div style="display: grid; gap: 1.5rem;">
+            {% for pedido in pedidos %}
+                <div style="background: var(--secondary); padding: 2rem; border-radius: 12px; border: 1px solid var(--border);">
+                    <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 1.5rem;">
+                        <div>
+                            <h3 style="margin-bottom: 0.5rem;">Pedido #{{ pedido.id_pedido }}</h3>
+                            <p style="color: var(--text-muted);">
+                                <i class="fas fa-calendar"></i> {{ pedido.fecha_pedido_pedido|date:"d/m/Y H:i" }}
+                            </p>
+                        </div>
+                        <div style="text-align: right;">
+                            <span style="padding: 0.5rem 1rem; background: {% if pedido.estado_pedido == 'entregado' %}#16a34a{% elif pedido.estado_pedido == 'enviado' %}#3b82f6{% elif pedido.estado_pedido == 'pagado' %}#f59e0b{% else %}#6b7280{% endif %}; color: white; border-radius: 8px; font-weight: bold; text-transform: capitalize;">
+                                {{ pedido.get_estado_pedido_display }}
+                            </span>
+                        </div>
+                    </div>
+                    
+                    <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 2rem; margin-bottom: 1.5rem;">
+                        <div>
+                            <h4 style="margin-bottom: 0.5rem;">
+                                <i class="fas fa-box"></i> Producto
+                            </h4>
+                            <div style="display: flex; gap: 1rem; align-items: center;">
+                                <img src="{{ pedido.id_producto.imagen_producto|default:'https://via.placeholder.com/80x80?text=Sin+Imagen' }}" 
+                                     alt="{{ pedido.id_producto.nombre_producto }}"
+                                     style="width: 80px; height: 80px; border-radius: 8px; object-fit: cover;">
+                                <div>
+                                    <p style="font-weight: bold;">{{ pedido.id_producto.nombre_producto }}</p>
+                                    <p style="color: var(--text-muted); font-size: 0.9rem;">
+                                        Cantidad: {{ pedido.cantidad_pedido }}
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div>
+                            <h4 style="margin-bottom: 0.5rem;">
+                                <i class="fas fa-map-marker-alt"></i> Dirección
+                            </h4>
+                            <p style="color: var(--text-muted); font-size: 0.9rem;">
+                                {{ pedido.id_direccion.direccion_detallada_direccion }}<br>
+                                {{ pedido.id_direccion.distrito_direccion }}, {{ pedido.id_direccion.canton_direccion }}<br>
+                                {{ pedido.id_direccion.provincia_direccion }}
+                            </p>
+                        </div>
+                    </div>
+                    
+                    <div style="display: flex; justify-content: space-between; align-items: center; padding-top: 1.5rem; border-top: 1px solid var(--border);">
+                        <div>
+                            <p style="color: var(--text-muted); margin-bottom: 0.25rem;">
+                                <i class="fas fa-credit-card"></i> Método de pago: 
+                                <span style="text-transform: capitalize;">{{ pedido.get_metodo_pago_pedido_display }}</span>
+                            </p>
+                            {% if pedido.referencia_transaccion_pedido %}
+                                <p style="color: var(--text-muted); font-size: 0.9rem;">
+                                    Referencia: {{ pedido.referencia_transaccion_pedido }}
+                                </p>
+                            {% endif %}
+                        </div>
+                        <div style="text-align: right;">
+                            <p style="color: var(--text-muted); margin-bottom: 0.25rem;">Total</p>
+                            <p style="font-size: 1.5rem; font-weight: bold; color: var(--accent);">
+                                ₡{{ pedido.monto_total_pedido }}
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <div style="text-align: center; padding: 4rem 2rem; background: var(--secondary); border-radius: 12px; border: 1px solid var(--border);">
+            <i class="fas fa-box-open" style="font-size: 4rem; color: var(--text-muted); margin-bottom: 1rem;"></i>
+            <h3 style="margin-bottom: 1rem;">No tienes pedidos aún</h3>
+            <p style="color: var(--text-muted); margin-bottom: 2rem;">Realiza tu primer pedido para verlo aquí</p>
+            <a href="{% url 'home' %}" style="padding: 0.75rem 2rem; background: var(--accent); color: white; border-radius: 8px; text-decoration: none;">
+                <i class="fas fa-shopping-bag"></i> Ir a Productos
+            </a>
+        </div>
+    {% endif %}
+</div>
+{% endblock %}
+

@@ -62,6 +62,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'app.context_processors.cart_context',
             ],
         },
     },
@@ -77,14 +78,26 @@ DATABASES = {
     'default': {
         'ENGINE': 'mssql',
         'NAME': 'DB_TiendaOnline',
-        'HOST': 'CHUS115',  # solo servidor
+        'HOST': 'localhost\\SQLEXPRESS01',  # instancia incluida en HOST
+        'PORT': '',  # vacío, se usa puerto dinámico
         'OPTIONS': {
-            'driver': 'ODBC Driver 18 for SQL Server',
-            'trusted_connection': 'yes',
-            'extra_params': 'Encrypt=no;',
+            'driver': 'ODBC Driver 17 for SQL Server',
+            'trusted_connection': 'yes',  # usa Windows Authentication
+            'init_command': "SET sql_mode='STRICT_TRANS_TABLES'",  # No aplica a SQL Server, pero puede ayudar
         },
     }
 }
+
+# Configurar el schema por defecto para las tablas de Django
+# Django buscará las tablas en el schema 'dbo' por defecto
+
+
+
+# Configuración adicional para manejar errores de conexión
+# Si SQL Server no está disponible, el servidor aún puede iniciar
+# pero las operaciones de base de datos fallarán
+
+
 
 # Password validation
 # https://docs.djangoproject.com/en/5.2/ref/settings/#auth-password-validators
@@ -108,9 +121,9 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/5.2/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'es-es'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'America/Costa_Rica'
 
 USE_I18N = True
 
@@ -121,6 +134,14 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/5.2/howto/static-files/
 
 STATIC_URL = 'static/'
+STATIC_ROOT = BASE_DIR / 'staticfiles'
+STATICFILES_DIRS = [
+    BASE_DIR / 'app' / 'static',
+]
+
+# Media files (User uploaded files)
+MEDIA_URL = '/media/'
+MEDIA_ROOT = BASE_DIR / 'media'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field

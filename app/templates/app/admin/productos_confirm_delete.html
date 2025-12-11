@@ -1,0 +1,49 @@
+{% extends 'app/base.html' %}
+{% load static %}
+
+{% block title %}Eliminar Producto - TechHub{% endblock %}
+
+{% block content %}
+<div class="container" style="max-width: 600px; margin: 2rem auto; padding: 2rem;">
+    <div style="background: var(--secondary); padding: 2rem; border-radius: 12px; border: 1px solid var(--border);">
+        <h2 style="margin-bottom: 1.5rem; color: #dc2626;">
+            <i class="fas fa-exclamation-triangle"></i> Confirmar Eliminación
+        </h2>
+        
+        <div style="margin-bottom: 2rem;">
+            <p style="margin-bottom: 1rem;">¿Estás seguro de que deseas eliminar el siguiente producto?</p>
+            
+            <div style="background: var(--primary); padding: 1.5rem; border-radius: 8px; border: 1px solid var(--border);">
+                <div style="display: flex; gap: 1rem; align-items: center; margin-bottom: 1rem;">
+                    <img src="{{ producto.imagen_producto|default:'https://via.placeholder.com/80x80?text=Sin+Imagen' }}" 
+                         alt="{{ producto.nombre_producto }}"
+                         style="width: 80px; height: 80px; border-radius: 8px; object-fit: cover;">
+                    <div>
+                        <h3 style="margin-bottom: 0.25rem;">{{ producto.nombre_producto }}</h3>
+                        <p style="color: var(--text-muted); font-size: 0.9rem;">{{ producto.categoria_producto|default:"General" }}</p>
+                        <p style="color: var(--accent); font-weight: bold;">₡{{ producto.precio_producto }}</p>
+                    </div>
+                </div>
+            </div>
+            
+            <p style="color: #dc2626; font-weight: bold; margin-top: 1rem;">
+                <i class="fas fa-exclamation-circle"></i> Esta acción no se puede deshacer.
+            </p>
+        </div>
+        
+        <form method="POST" action="{% url 'eliminar_producto' producto.id_producto %}">
+            {% csrf_token %}
+            <div style="display: flex; gap: 1rem;">
+                <button type="submit" style="flex: 1; padding: 0.75rem; background: #dc2626; color: white; border: none; border-radius: 8px; font-size: 1rem; cursor: pointer;">
+                    <i class="fas fa-trash"></i> Sí, Eliminar
+                </button>
+                <a href="{% url 'listar_productos' %}" style="flex: 1; padding: 0.75rem; background: var(--primary); color: var(--text); border: 1px solid var(--border); border-radius: 8px; text-decoration: none; text-align: center;">
+                    <i class="fas fa-times"></i> Cancelar
+                </a>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}
+
+
